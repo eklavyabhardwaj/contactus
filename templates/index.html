@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='ELEC.png') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Electrolab Contact Us</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<style>
+    .social-icons {
+    margin-top: 20px;
+    display: flex;
+    gap: 30px;
+    justify-content: center; 
+    align-items: center;
+}
+
+.social-icons a {
+    font-size: 36px; 
+    color: #ffffff; 
+    transition: color 0.3s;
+}
+
+.social-icons a:hover {
+    color: #007bff; 
+}
+
+</style>
+<style>
+    .captcha-wrapper {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+#captcha-text {
+    display: inline-block;
+    background-color: #f7f5f5;
+    padding: 8px 12px;
+    font-family: 'Courier New', monospace;
+    font-size: 20px;
+    font-weight: bold;
+    letter-spacing: 5px;
+    color: #333;
+    user-select: none;
+    border-radius: 4px;
+    margin-right: 10px;
+    min-width: 120px;
+    text-align: center;
+}
+
+#refresh-captcha {
+    background: #ffffff;
+    border: none;
+    color: white;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+#refresh-captcha:hover {
+    background: #ffffff;
+}
+
+.captcha-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    width: 100%;
+}
+
+.captcha-wrapper {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0;
+}
+
+#captcha-input {
+    flex: 1;
+    min-width: 120px;
+    align-items: flex-end;
+}
+
+#captcha-canvas {
+    border-radius: 4px;
+    margin-right: 10px;
+    display: inline-block;
+}
+</style>
+
+<style>
+    /* Modal background overlay */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(4px);
+      animation: fadeIn 0.3s ease-in-out;
+    }
+    
+    /* Modal content box */
+    .modal-content {
+      background: #fafafa;
+      margin: 12% auto;
+      padding: 30px 20px;
+      border-radius: 12px;
+      width: 400px;
+      text-align: center;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      animation: slideUp 0.3s ease;
+      position: relative;
+    }
+    
+    /* Close button */
+    .modal-content .close {
+      color: #ff0000;
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 26px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    
+    .modal-content .close:hover {
+        color: #a10000;
+    }
+    
+    /* GIF image */
+    .captcha-gif {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      margin-bottom: 15px;
+      border-radius: 8px;
+    }
+    
+    /* Heading */
+    .modal-content h2 {
+      margin: 10px 0;
+      color: #e74c3c;
+    }
+    
+    /* Paragraph */
+    .modal-content p {
+      color: #555;
+      font-size: 15px;
+      margin-bottom: 25px;
+    }
+    
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    @keyframes slideUp {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    
+    /* Optional blur effect on background when modal is active */
+    .blur {
+      filter: blur(5px);
+      pointer-events: none;
+      user-select: none;
+    }
+
+/* Reset all elements */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body styling - setting the page background to light grey */
+body {
+    background-color: #d3d3d3; /* Light grey background */
+    color: #333; /* Default text color */
+    font-family: Arial, sans-serif;
+}
+
+/* Modal background overlay */
+.modal {
+    display: none; /* Initially hidden */
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.8); /* White background with transparency */
+    backdrop-filter: blur(4px); /* Apply blur effect to the content behind */
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Modal content box */
+.modal-content {
+    background: #fafafa; /* Light gray background for the modal content */
+    margin: 12% auto;
+    padding: 30px 20px;
+    border-radius: 12px;
+    width: 400px;
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    animation: slideUp 0.3s ease;
+    position: relative;
+}
+
+/* Close button */
+.modal-content .close {
+    color: #ff0000;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 26px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.modal-content .close:hover {
+    color: #a10000;
+}
+
+/* GIF image */
+.captcha-gif {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin-bottom: 15px;
+    border-radius: 8px;
+}
+
+/* Heading */
+.modal-content h2 {
+    margin: 10px 0;
+    color: #e74c3c;
+}
+
+/* Paragraph */
+.modal-content p {
+    color: #555;
+    font-size: 15px;
+    margin-bottom: 25px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Optional blur effect on background when modal is active */
+.blur {
+    filter: blur(5px);
+    pointer-events: none;
+    user-select: none;
+}
+
+    </style>
+<style>
+      header {
+      background-color: #2f2f2f;
+      padding: 6px;
+      border-radius: 5px;
+      margin-bottom: 15px;
+    }
+    .header-content {
+      display: flex;
+      align-items: center;
+      justify-content: start;
+      gap: 20px;
+    }
+    .header-content h1 {
+      color: #fff;
+      font-size: 22px;
+      margin: 0;
+    }
+    .header-logo {
+      max-height:90px;
+      width: auto;
+    }
+
+
+</style>
+
+<body>
+ <header>
+  <div class="header-content">
+    <a href="https://www.electrolabgroup.com/" target="_blank" rel="noopener noreferrer">
+      <h1 class="logo-header">
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Electrolab Logo" class="header-logo">
+      </h1>
+        </a>
+<!--      <h1>Fill This Form To Reach Out Us</h1>-->
+    <br><br>
+    <h1 style="padding-left: 1290px;">CONTACT US</h1>
+
+
+  </div>
+</header>
+
+    <div id="captcha-modal" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <img src="https://media.tenor.com/jSQQDXi79AUAAAAM/wrong-sad.gif" alt="Verification Failed" class="captcha-gif">
+          <h2>Verification Failed</h2>
+          <p>Oops! CAPTCHA check didn't go through.<br>Please try again.</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Contact form section -->
+        <div class="contact-box">
+            <!-- Left side of the form -->
+            <div class="container-left">
+                <!-- <h3>Fill the Form*</h3> -->
+                <!-- Form -->
+
+                <form id="submit" action="/submit" method="post" onsubmit="return validateForm()">
+                    <div><h2 style="text-align: center;">Fill This Form To Reach Out Us</h2></div>
+                      <br><br><br>
+                    <div style="display: block;">
+                        <input type="hidden" id="naming_series" name="naming_series" value=".FY.EXPO.####">
+                        <input type="hidden" id="source" name="source" value="Export Lead Generation">
+                        <input type="hidden" id="status" name="status" value="Open">
+                    </div>
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label>Name*</label>
+                            <input type="text" id="new_customer_name" name="new_customer_name" placeholder="Enter your Name" autocomplete="off" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Company Name*</label>
+                            <input type="text" id="contact_person" name="contact_person" placeholder="Enter your Company Name" autocomplete="off" required>
+                        </div>
+                    </div>
+                    
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label>Email*</label>
+                            <input type="email" id="contact_email_id" name="contact_email_id" placeholder="youremail@gmail.com" autocomplete="off" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Phone*</label>
+                            <input type="number" id="contact_number" name="contact_number" placeholder="+91 1234567890" autocomplete="off" required>
+                        </div>
+                    </div>
+                
+                    <div class="input-row">
+                        <div class="input-group">
+                            <label>Territory*</label>
+                            <input type="text" id="state" name="state" placeholder="Enter your Territory"  autocomplete="off" required>
+                        </div>
+                    </div>
+                
+                    <label>Requirement*</label>
+                    <textarea rows="9" id="remark" name="remark" placeholder="Enter your Requirement" autocomplete="off" required></textarea>
+
+                    <div class="input-row captcha-container" style="padding-top: 20px;">
+                        <div class="input-group">
+                            <div class="captcha-row">
+                                <label style="white-space: nowrap; margin-right: 10px; min-width: fit-content; padding-left: 20px;">CAPTCHA : </label>
+                                <div class="captcha-wrapper">
+                                    <canvas id="captcha-canvas" width="150" height="50"></canvas>
+                                    <img src="{{ url_for('static', filename='verification-code-refresh.gif') }}" id="refresh-captcha" style="cursor: pointer; height: 30px; width: auto;" alt="Refresh">
+                                </div>
+                                <input type="text" style="width: 200px;" id="captcha-input" name="captcha-input" placeholder="Enter code" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal Overlay -->
+                    
+
+                    <button type="submit">SEND MESSAGE</button>
+                </form>
+
+
+
+             
+            </div>
+            <!-- Right side with contact information -->
+            <div class="container-right">
+                <h3>Reach Us</h3>
+                <!-- Table for contact information -->
+                <table>
+                    <tr>
+                        <td>Email: </td>
+                        <td>sales@electrolabgroup.com <br> marketing@electrolabgroup.com</td>
+                    </tr>
+
+                    <tr>
+                        <td>Phone: </td>
+                        <td>+91 9167930377</td>
+                    </tr>
+
+                    <tr>
+                        <td>Address: </td>
+                        <td>EL-23/24, T.T.C., Electronic Zone,<br>M.I.D.C., Mahape,Navi Mumbai,<br>
+                            400710, India <br></td>
+                    </tr>
+                </table>
+                
+                <!-- Map section -->
+                <div class="map">
+                    <!-- Google Map iframe -->
+                     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2339.078894702379!2d73.02420971664436!3d19.10695703077001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c0ec55354d51%3A0x2b6a57849c4ad2d1!2sElectrolab%20India%20Pvt%20Ltd%20(R%20%26%20D%20Center)%20%7C%20Lab%20Equipment%20Manufacturer%20%7C%20Lab%20Equipment%20Supplier%20%7C%20Lab%20Analytical%20Instrument!5e1!3m2!1sen!2sin!4v1744006771501!5m2!1sen!2sin"
+                      width="800" height="270" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+
+                <div class="social-icons">
+                    <a href="https://www.facebook.com/electrolabgroup" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="https://www.instagram.com/electrolab_india/" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://wa.me/919167930377" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+                    <a href="https://www.linkedin.com/company/electrolab-group" target="_blank"><i class="fa-brands fa-linkedin-in"></i></a>
+                </div>
+                
+
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

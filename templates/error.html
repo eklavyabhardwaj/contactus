@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error Page</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='electrolab export 2.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            font-family: "Plus Jakarta Sans", sans-serif;
+            background: #690202;
+        }
+        .success-icon {
+                font-size: 3rem;
+                text-align: center;  
+                margin-bottom: 1rem;
+            }
+    </style>
+</head>
+<body>
+    <div class="container" style="text-align: center; padding: 50px;">
+        <img src="{{ url_for('static', filename='Electrolab.png') }}" alt="Electrolab Logo" style="max-width: 200px; margin: 0 auto 20px; padding-top: 75px;">
+        
+        <h1 style="color: aqua; padding-top: 30px;">Sorry for the Inconvenience</h1>
+        <p style="color: white; font-size: 18px; padding-top: 20px;">
+            It looks like we're having trouble processing your request right now.
+        </p>
+        <p style="color: white; font-size: 18px;">
+            Our servers might be down, but we're on it! 🚧
+        </p>
+        <p style="color: white; font-size: 18px; padding-top: 20px;">
+            Thank you for your patience — we'll get back to you as soon as possible.
+        </p>
+    
+        <div class="success-icon" style="font-size: 48px; padding-top: 40px;">⚠️</div>
+
+    </div>
+    
+</body>
+</html>
+
